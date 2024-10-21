@@ -3,16 +3,13 @@
 @using BlazorEditFormExamples.Model
 <h3>Simple Form</h3>
 
-<EditForm Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty">
+<EditForm Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
     <DataAnnotationsValidator />
-    <ValidationSummary />
 
     <div class="row">
-        <div class="col-sm-2">
+        <div class="form-floating">
+            <InputText id="FirstName" @bind-Value="Model.FirstName" class="form-control" placeholder="First Name"/>
             <label for="FirstName">First Name</label>
-        </div>
-        <div class="col-10">
-            <InputText id="FirstName" @bind-Value="Model.FirstName" class="form-control" />
         </div>
     </div>
     <div class="row">
