@@ -1,0 +1,36 @@
+﻿@using BlazorEditFormExamples.Model
+@inherits InputBase<SelectListItem?>
+
+<InputSelect @bind-Value="@CurrentValueAsString" @attributes="@AdditionalAttributes">
+    <option value="" selected="@(string.IsNullOrEmpty(CurrentValueAsString))">Select...</option>
+    @if (Items != null)
+    {
+        @foreach (var item in Items)
+        {
+            <option value="@item.Value" selected="@(item.Value == CurrentValueAsString)">@item.Text</option>
+        }
+    }
+</InputSelect>
+
+@code {
+    [Parameter]
+    public List<SelectListItem>? Items { get; set; }
+
+    protected override bool TryParseValueFromString(string? value, out SelectListItem? result, out string validationErrorMessage)
+    {
+        result = null;
+        if (Items != null)
+        {
+            result = Items.FirstOrDefault(x => x.Value == value);
+        }
+
+        validationErrorMessage = string.Empty;
+        return true;
+    }
+
+    protected override string FormatValueAsString(SelectListItem? value)
+    {
+        return value?.Value ?? string.Empty;
+    }
+
+}
