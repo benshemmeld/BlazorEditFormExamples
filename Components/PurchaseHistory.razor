@@ -2,15 +2,18 @@
 @using BlazorEditFormExamples.Components
 @inherits Editor<List<Purchase>>
 
-<div class="m-4">
+<div class="mt-4">
     <h5>Purchase History</h5>
-    <button type="button" class="btn btn-info" @onclick="AddPurchase">Add Purchase</button>
+    <div class="d-flex flex-row justify-content-end">
+        <button type="button" class="btn btn-secondary align-right" @onclick="AddPurchase"><i class="fa fa-plus me-1"></i>Add Purchase</button>
+    </div>
 </div>
 
 @for (var i = 0; i < Value.Count; i++)
 {
-    var purchase = Value[i];
-    <EditPurchase @bind-Value="purchase" />
+    var index = i;
+    var purchase = Value[index];
+    <EditPurchase @bind-Value="purchase" RemoveItem="() => Value.RemoveAt(index)" />
 }
 
 @code {

@@ -2,10 +2,10 @@
 @inherits Editor<Purchase>
 <div class="row">
     <div class="form-floating col-md-2">
-        <InputDate @bind-Value="Value.Date" class="form-control" placeholder="Date"/>
+        <InputDate @bind-Value="Value.Date" class="form-control" placeholder="Date" />
         <label>Date</label>
     </div>
-    <div class="form-floating col-md-6">
+    <div class="form-floating col-md-5">
         <InputText @bind-Value="Value.Product" class="form-control" placeholder="Product" />
         <label>Product</label>
     </div>
@@ -13,8 +13,15 @@
         <InputNumber @bind-Value="Value.Price" class="form-control" placeholder="Price" />
         <label>Price</label>
     </div>
+    <div class="col-md-1 d-flex align-items-center">
+        <a class="btn ms-auto" style="width:50px;" @onclick="async () => await RemoveItem.InvokeAsync()">
+            <i class="fa fa-xmark ms-2" ></i>
+        </a>
+    </div>
 </div>
 
-@code {
 
+@code {
+    [Parameter]
+    public EventCallback RemoveItem { get; set; }
 }
