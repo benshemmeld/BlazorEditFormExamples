@@ -10,6 +10,7 @@ namespace BlazorEditFormExamples.Model
         [Required]
         public string Suburb { get; set; } = string.Empty;
 
+        [Required]
         public SelectListItem? State { get; set; }
 
         [Required]

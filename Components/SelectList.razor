@@ -1,7 +1,7 @@
 ﻿@using BlazorEditFormExamples.Model
 @inherits InputBase<SelectListItem?>
 
-<InputSelect @bind-Value="@CurrentValueAsString" @attributes="@AdditionalAttributes">
+<select value="@CurrentValueAsString" @onchange="SelectValueChanged" @attributes="@AdditionalAttributes" class="@ClassValue">
     <option value="" selected="@(string.IsNullOrEmpty(CurrentValueAsString))">Select...</option>
     @if (Items != null)
     {
@@ -10,11 +10,33 @@
             <option value="@item.Value" selected="@(item.Value == CurrentValueAsString)">@item.Text</option>
         }
     }
-</InputSelect>
+</select>
 
 @code {
     [Parameter]
     public List<SelectListItem>? Items { get; set; }
+
+    private string ClassValue { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        SetClassValue();
+    }
+
+    private void SelectValueChanged(ChangeEventArgs e)
+    {
+        CurrentValueAsString = e.Value as string;
+        SetClassValue();
+    }
+
+    private void SetClassValue()
+    {
+        if (AdditionalAttributes != null)
+        {
+            ClassValue = AdditionalAttributes["class"]?.ToString() ?? string.Empty;
+            ClassValue += " " + EditContext?.FieldCssClass(FieldIdentifier);
+        }
+    }
 
     protected override bool TryParseValueFromString(string? value, out SelectListItem? result, out string validationErrorMessage)
     {

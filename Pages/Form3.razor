@@ -1,5 +1,43 @@
 ﻿@page "/Form3"
+@using BlazorEditFormExamples.Components
+@using BlazorEditFormExamples.Model
+<h3>Model with child class</h3>
+
+<EditForm Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
+    <ObjectGraphDataAnnotationsValidator />
+
+    <div class="form-floating">
+        <InputText id="FirstName" @bind-Value="Model.FirstName" class="form-control" placeholder="First Name" />
+        <label for="FirstName">First Name</label>
+    </div>
+    <div class="form-floating">
+        <InputText id="LastName" @bind-Value="Model.LastName" class="form-control" placeholder="Last Name" />
+        <label for="LastName">Last Name</label>
+    </div>
+    <div class="form-floating">
+        <InputText id="Phone" @bind-Value="Model.Phone" class="form-control" placeholder="Phone" />
+        <label for="Phone">Phone</label>
+    </div>
+    <div class="form-floating">
+        <InputText id="Email" @bind-Value="Model.Email" class="form-control" placeholder="Email" />
+        <label for="Email">Email</label>
+    </div>
+    <EditAddress @bind-Value="Model.Address" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+<div class="mt-5">
+<pre>
+        @Json
+</pre>
+</div>
 
 @code {
+    public Person Model { get; set; } = new();
 
+    public string Json { get; set; } = string.Empty;
+
+    public void Save()
+    {
+        Json = Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented);
+    }
 }
