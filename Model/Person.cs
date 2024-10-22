@@ -18,5 +18,8 @@ namespace BlazorEditFormExamples.Model
 
         [ValidateComplexType]
         public Address? Address { get; set; } = new();
+
+        [ValidateComplexType]
+        public List<Purchase> PurchaseHistory { get; set; } = new();
     }
 }

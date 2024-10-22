@@ -14,6 +14,7 @@ namespace BlazorEditFormExamples.Model
         public SelectListItem? State { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{4}$", ErrorMessage = "Invalid postcode")]
         public string Postcode { get; set; } = string.Empty;
     }
 }
