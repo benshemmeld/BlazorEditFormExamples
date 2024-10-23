@@ -1,34 +1,39 @@
 ﻿@using BlazorEditFormExamples.Model
 @inherits Editor<Address>
 
-<div class="form-floating">
-    <InputText id="Street" @bind-Value="Value.Street" class="form-control" placeholder="Street Address" />
-    <label for="Street">Street Address</label>
-</div>
-<div class="form-floating">
-    <InputText id="Suburb" @bind-Value="Value.Suburb" class="form-control" placeholder="Town/Suburb" />
-    <label for="Suburb">Town/Suburb</label>
-</div>
-<div class="row">
-    <div class="form-floating col-md-6">
-        <SelectList id="State" @bind-Value="Value.State" Items="StateSelectList" class="form-control" placeholder="State" />
-        <label for="State">State</label>
-    </div>
-    <div class="form-floating col-md-6">
-        <InputText id="Postcode" @bind-Value="Value.Postcode" class="form-control" placeholder="Postcode" />
-        <label for="Postcode">Postcode</label>
+<div class="card my-3">
+    <div class="card-header">Address</div>
+    <div class="card-body">
+        <div class="form-floating">
+            <InputText id="Street" @bind-Value="Value.Street" class="form-control" placeholder="Street Address" />
+            <label for="Street">Street Address</label>
+        </div>
+        <div class="form-floating">
+            <InputText id="Suburb" @bind-Value="Value.Suburb" class="form-control" placeholder="Town/Suburb" />
+            <label for="Suburb">Town/Suburb</label>
+        </div>
+        <div class="row">
+            <div class="form-floating col-md-6">
+                <SelectList id="State" @bind-Value="Value.State" Items="StateSelectList" class="form-control" placeholder="State" />
+                <label for="State">State</label>
+            </div>
+            <div class="form-floating col-md-6">
+                <InputText id="Postcode" @bind-Value="Value.Postcode" class="form-control" placeholder="Postcode" />
+                <label for="Postcode">Postcode</label>
+            </div>
+        </div>
     </div>
 </div>
 @code {
     private List<SelectListItem> StateSelectList => new List<SelectListItem>
     {
-        new SelectListItem { Value = "ACT", Text = "Australian Capital Territory" },
-        new SelectListItem { Value = "NSW", Text = "New South Wales" },
-        new SelectListItem { Value = "NT", Text = "Northern Territory" },
-        new SelectListItem { Value = "QLD", Text = "Queensland" },
-        new SelectListItem { Value = "SA", Text = "South Australia" },
-        new SelectListItem { Value = "TAS", Text = "Tasmania" },
-        new SelectListItem { Value = "VIC", Text = "Victoria" },
-        new SelectListItem { Value = "WA", Text = "Western Australia" }
+    new SelectListItem { Value = "ACT", Text = "Australian Capital Territory" },
+    new SelectListItem { Value = "NSW", Text = "New South Wales" },
+    new SelectListItem { Value = "NT", Text = "Northern Territory" },
+    new SelectListItem { Value = "QLD", Text = "Queensland" },
+    new SelectListItem { Value = "SA", Text = "South Australia" },
+    new SelectListItem { Value = "TAS", Text = "Tasmania" },
+    new SelectListItem { Value = "VIC", Text = "Victoria" },
+    new SelectListItem { Value = "WA", Text = "Western Australia" }
     };
-}
+    }
