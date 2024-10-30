@@ -1,0 +1,41 @@
+﻿@using BlazorEditFormExamples.Model
+@inherits Editor<Person>
+@inject IServiceProvider ServiceProvider
+
+<InputText id="FirstName" @bind-Value="Value.FirstName" @bind-Value:after="FirstNameChanged" class="form-control" placeholder="First Name" />
+<label for="FirstName">First Name</label>
+
+@code {
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            if (EditContext != null)
+            {
+                ValidationMessageStore = new ValidationMessageStore(EditContext);
+            }
+        }
+    }
+
+    private FieldIdentifier FieldIdentifier => FieldIdentifier.Create(() => Value.FirstName);
+    private ValidationMessageStore? ValidationMessageStore { get; set; }
+
+    private void FirstNameChanged()
+    {
+        if (ValidationMessageStore == null)
+        {
+            return;
+        }
+
+        ValidationMessageStore.Clear(FieldIdentifier);
+
+        if (Value.FirstName != "Ben")
+        {
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
+            ValidationMessageStore.Add(FieldIdentifier, "First name must be Ben");
+        }
+    }
+}
