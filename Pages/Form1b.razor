@@ -1,14 +1,14 @@
-﻿@page "/Form5"
+﻿@page "/Form1b"
 @using BlazorEditFormExamples.Components
 @using BlazorEditFormExamples.Model
-<h3>Custom Validation</h3>
-
-<EditForm Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
+<h3>Simple Form - Enable Submit when Valid (approach #2)</h3>
+<p>Here we use a custom component "EditFormWatcher" to validate the model after a field is changed and determine when the form is valid. Since the form itself is not validated after each field is changed, the validation messages are only shown after a field has been modified.</p>
+<EditForm @ref="Form" Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
     <DataAnnotationsValidator />
-    <ValidationSummary />
-    <p>The First Name field uses a custom component which implement some custom validation. If the First Name entered is anything other than "Ben" then a message is manually added to the ValidationMessageStore</p>
+    <EditFormWatcher @bind-IsValid="IsFormValid" />
     <div class="form-floating">
-        <EditFirstNameWithCustomValidation @bind-Value="Model" />
+        <InputText id="FirstName" @bind-Value="Model.FirstName" class="form-control" placeholder="First Name" />
+        <label for="FirstName">First Name</label>
     </div>
     <div class="form-floating">
         <InputText id="LastName" @bind-Value="Model.LastName" class="form-control" placeholder="Last Name" />
@@ -22,7 +22,7 @@
         <InputText id="Email" @bind-Value="Model.Email" class="form-control" placeholder="Email" />
         <label for="Email">Email</label>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" disabled="@(!IsFormValid)">Submit</button>
 </EditForm>
 <div class="mt-5">
 <pre>
@@ -33,10 +33,15 @@
 @code {
     public Person Model { get; set; } = new();
 
+    private bool IsFormValid { get; set; }
+
     public string Json { get; set; } = string.Empty;
 
     public void Save()
     {
         Json = Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented);
     }
+
+    private EditForm? Form { get; set; }
+
 }

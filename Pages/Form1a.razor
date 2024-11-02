@@ -1,7 +1,8 @@
 ﻿@page "/Form1a"
 @using BlazorEditFormExamples.Model
 <h3>Simple Form - Enable Submit when Valid</h3>
-
+<p>Each time a field is changed, the form is validated to determine when it's valid and the submit button will be enabled</p>
+<p>As a consequence the validation errors are show for fields which have not yet been modified. To avoid this behaviour the next example shows another approach.</p>
 <EditForm @ref="Form" Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
     <DataAnnotationsValidator />
 
