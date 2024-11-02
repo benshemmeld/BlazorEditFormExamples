@@ -1,0 +1,22 @@
+{
+  "Source": "Styles",
+  "Target": "wwwroot/css",
+  "Arguments": "--style=compressed",
+  "GenerateScopedCss": true,
+  "ScopedCssFolders": [ "Layout" ],
+  "IncludePaths": [],
+  "Compilations": [
+    // Specify a specific file source/target in addition to the "Styles" -> "wwwroot/css" Source/Target above
+    {
+      "Source": "wwwroot/css/app.scss",
+      "Target": "wwwroot/css/app.css"
+    }
+  ],
+
+  // You can override specific options based on the build configuration
+  "Configurations": {
+    "Debug": { // These options apply only to Debug builds
+      "Arguments": "--style=expanded"
+    }
+  }
+}
