@@ -1,0 +1,109 @@
+﻿@page "/Form6"
+@using BlazorEditFormExamples.Components
+@using BlazorEditFormExamples.Model
+<h3>Child class validation with FluentValidation</h3>
+
+<EditForm @ref=Form Model="Model" OnValidSubmit="Save" OnInvalidSubmit="() => Json = string.Empty" class="">
+    <FluentValidationValidator />
+
+    <div class="form-floating">
+        <SelectList id="ContactType" @bind-Value="Type" @bind-Value:after="OnAfterTypeSelected" Items="ContactTypeSelectList" class="form-control" placeholder="Type" />
+        <label for="ContactType">Type</label>
+    </div>
+    @if (Model.Contact != null)
+    {
+        <div class="form-floating">
+            <InputText id="Name" @bind-Value="Model.Contact.Name" class="form-control" placeholder="Name" />
+            <ValidationMessage For="() => Model.Contact.Name" />
+            <label for="Name">Name</label>
+        </div>
+        <div class="form-floating">
+            <InputText id="Email" @bind-Value="Model.Contact.Email" class="form-control" placeholder="Email" />
+            <ValidationMessage For="() => Model.Contact.Email" />
+            <label for="Email">Email</label>
+        </div>
+        <div class="form-floating">
+            <InputText id="Phone" @bind-Value="Model.Contact.Phone" class="form-control" placeholder="Phone" />
+            <ValidationMessage For="() => Model.Contact.Phone" />
+            <label for="Phone">Phone</label>
+        </div>
+
+        @if (Model.Contact is ContactPerson contactPerson)
+        {
+            <div class="form-floating">
+                <InputText id="Pronoun" @bind-Value="contactPerson.Pronoun" class="form-control" placeholder="Pronoun" />
+                <ValidationMessage For="() => contactPerson.Pronoun" />
+                <label for="Pronoun">Pronoun</label>
+            </div>
+        }
+        else if (Model.Contact is ContactOrganisation contactOrganisation)
+        {
+            <div class="form-floating">
+                <InputText id="KeyContact" @bind-Value="contactOrganisation.KeyContact" class="form-control" placeholder="Key Contact" />
+                <ValidationMessage For="() => contactOrganisation.KeyContact" />
+                <label for="KeyContact">KeyContact</label>
+            </div>
+        }
+        <div class="form-floating">
+            <InputCheckbox id="AreAddressDetailsRequired" @bind-Value="Model.Contact.AreAddressDetailsRequired" @bind-Value:after="OnAfterAddressDetailsChanged" placeholder="Are Address Details Required" />
+        </div>
+
+        @if (Model.Contact.AreAddressDetailsRequired)
+        {
+            <EditAddress @bind-Value="Model.Contact.Address" />
+        }
+    }
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+<div class="mt-5">
+<pre>
+        @Json
+</pre>
+</div>
+
+@code {
+    private EditForm Form;
+    private FormContactModel Model { get; set; } = new();
+    private string Json { get; set; } = string.Empty;
+    private SelectListItem Type { get; set; } = new();
+    private ValidationMessageStore ValidationMessages;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        ValidationMessages = new ValidationMessageStore(Form.EditContext);
+    }
+
+    private void OnAfterTypeSelected()
+    {
+        ValidationMessages.Clear();
+        if (Type.Value == "Person")
+        {
+            Model.Contact = new ContactPerson();
+        }
+        else
+        {
+            Model.Contact = new ContactOrganisation();
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnAfterAddressDetailsChanged()
+    {
+        Model.Contact!.Address = new();
+        StateHasChanged();
+    }
+
+    private void Save()
+    {
+        Json = Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented);
+    }
+
+    private List<SelectListItem> ContactTypeSelectList => new List<SelectListItem>
+    {
+        new SelectListItem { Value = ContactType.Person.ToString(), Text = ContactType.Person.ToString() },
+        new SelectListItem { Value = ContactType.Organisation.ToString(), Text = ContactType.Organisation.ToString() },
+    };
+}
